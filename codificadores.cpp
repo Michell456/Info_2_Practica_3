@@ -3,8 +3,8 @@
 #include <cstring>
 using namespace std;
 
-int metDecodificacion1() {
-    char texto[150], grupo[9], anterior[9];
+int metCodificacion1() {
+    char texto[150], grupo[9], anterior[9],primerCaracter;
     string binario = "", textoCodificado = "";
     int n, a = 0, contadorBinario = 0;
 
@@ -41,15 +41,14 @@ int metDecodificacion1() {
         }
         grupo[n] = '\0';
 
-        // --- Codificación según las reglas ---
         if (i == 0) {
-            // Primer bloque → invertir todos los bits
+            //invertir todos los bits
             for (int j = 0; j < n; j++) {
                 if (grupo[j] == '0') grupo[j] = '1';
                 else grupo[j] = '0';
             }
         } else {
-            // Contar 1s y 0s en el bloque anterior
+            //Contar 1s y 0s en el bloque anterior
             int unos = 0, ceros = 0;
             for (int j = 0; j < n; j++) {
                 if (anterior[j] == '1') unos++;
@@ -79,10 +78,8 @@ int metDecodificacion1() {
             }
         }
 
-        // Guardar grupo codificado
         textoCodificado += grupo;
 
-        // Guardar este grupo como anterior
         for (int j = 0; j < n; j++) {
             anterior[j] = grupo[j];
         }
@@ -94,3 +91,61 @@ int metDecodificacion1() {
     return 0;
 }
 
+#include <iostream>
+#include <bitset>
+#include <cstring>
+using namespace std;
+
+int metCodificacion2() {
+    char texto[150], grupo[9];
+    string binario = "", textoCodificado = "";
+    int n, a = 0, contadorBinario = 0;
+
+    cout << "Ingresa la cadena: ";
+    cin.getline(texto, 150);
+
+    // Validar n
+    while (true) {
+        cout << "Ingrese n: ";
+        cin >> n;
+        if (n > 1 && n <= 8)
+            break;
+        cout << "Numero no valido, intentalo nuevamente" << endl;
+    }
+
+    // Convertir texto a binario
+    for (int i = 0; i < strlen(texto); i++) {
+        bitset<8> bits(texto[i]);
+        binario += bits.to_string();
+        contadorBinario += 8;
+    }
+
+    // Asegurar múltiplo de n
+    while (binario.length() % n != 0) {
+        binario += '0';
+        contadorBinario++;
+    }
+
+    // Procesar cada bloque de n bits
+    for (int i = 0; i < contadorBinario; i += n) {
+        for (int j = 0; j < n; j++) {
+            grupo[j] = binario[a];
+            a++;
+        }
+        grupo[n] = '\0'; // Fin de cadena
+
+        // Desplazar a la izquierda
+        char primerCaracter = grupo[0];
+        for (int j = 0; j < n - 1; j++) {
+            grupo[j] = grupo[j + 1];
+        }
+        grupo[n - 1] = primerCaracter;
+
+        textoCodificado += grupo;
+    }
+
+    cout << "\nBinario original:   " << binario << endl;
+    cout << "Binario codificado: " << textoCodificado << endl;
+
+    return 0;
+}
