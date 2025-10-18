@@ -3,15 +3,14 @@
 #include <cstring>
 using namespace std;
 
-int metCodificacion1() {
-    char texto[150], grupo[9], anterior[9],primerCaracter;
+int metCodificador1() {
+    char texto[150], grupo[9], anterior[9];
     string binario = "", textoCodificado = "";
     int n, a = 0, contadorBinario = 0;
 
     cout << "Ingresa la cadena: ";
     cin.getline(texto, 150);
 
-    // Validar n
     while (true) {
         cout << "Ingrese n: ";
         cin >> n;
@@ -91,12 +90,7 @@ int metCodificacion1() {
     return 0;
 }
 
-#include <iostream>
-#include <bitset>
-#include <cstring>
-using namespace std;
-
-int metCodificacion2() {
+int metCodificador2() {
     char texto[150], grupo[9];
     string binario = "", textoCodificado = "";
     int n, a = 0, contadorBinario = 0;
@@ -104,7 +98,6 @@ int metCodificacion2() {
     cout << "Ingresa la cadena: ";
     cin.getline(texto, 150);
 
-    // Validar n
     while (true) {
         cout << "Ingrese n: ";
         cin >> n;
@@ -132,7 +125,7 @@ int metCodificacion2() {
             grupo[j] = binario[a];
             a++;
         }
-        grupo[n] = '\0'; // Fin de cadena
+        grupo[n] = '\0';
 
         // Desplazar a la izquierda
         char primerCaracter = grupo[0];

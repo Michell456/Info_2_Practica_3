@@ -2,11 +2,21 @@
 #include <bitset>
 #include <cstring>
 using namespace std;
-int metDecodificacion1();
+
+int metCodificador1();
+int MetDecodificador1();
+int metCodificador2();
+int metDecodificador2();
 
 int main() {
 
-    int n = metDecodificacion1(); //por alguna razon si pongo que es void se crashea
+    while (true){
 
-    return 0;
+        int opcion;
+
+        cout << "  1. codificadores y decodificadores \n  2. aplicacion del banco" << endl;
+        cout << "Elija una opcion: ";
+        cin >> opcion;
+
+    }
 }
