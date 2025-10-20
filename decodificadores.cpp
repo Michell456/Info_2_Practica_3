@@ -3,25 +3,14 @@
 #include <cstring>
 using namespace std;
 
-int MetDecodificador1() {
 
-    char textoBinario[150], grupo[9], anterior[9];
+string MetDecodificador1(const string &textoBinario,int semilla) {
+
+    char grupo[9], anterior[9];
     string textoDecodificado = "";
-    int semilla, a = 0;
+    int a = 0;
 
-    cout << "Ingresa el texto binario a desencriptar: ";
-    cin.getline(textoBinario, 150);
-
-    // Pedir semilla válida
-    while (true) {
-        cout << "Ingrese la semilla: ";
-        cin >> semilla;
-        if (semilla > 1 && semilla <= 8)
-            break;
-        cout << "Semilla no válida, intentalo nuevamente" << endl;
-    }
-
-    int longitud = strlen(textoBinario);
+    int longitud = textoBinario.size();
 
     // Procesar bloques
     for (int i = 0; i < longitud; i += semilla) {
@@ -77,8 +66,6 @@ int MetDecodificador1() {
         }
     }
 
-    cout << "\nBinario decodificado: " << textoDecodificado << endl;
-
     int sobrantes = textoDecodificado.size() % 8;
     if (sobrantes != 0) {
         string limpio = "";
@@ -88,35 +75,22 @@ int MetDecodificador1() {
         textoDecodificado = limpio;
     }
 
-    // Convertir a texto ASCII (cada 8 bits)
-    cout << "Texto original: ";
+    // lo convierte a ASCII
+    string textoASCII = "";
     for (int i = 0; i < textoDecodificado.size(); i += 8) {
         bitset<8> bits(textoDecodificado.substr(i, 8));
-        cout << char(bits.to_ulong());
+        textoASCII += char(bits.to_ulong());
     }
-    cout << endl;
+    return textoASCII;
 
-    return 0;
 }
 
-int metDecodificador2() {
-    char textoBinario[150], grupo[9];
+string metDecodificador2(const string &textoBinario, int semilla) {
+    char grupo[9];
     string textoDecodificado = "";
-    int semilla, a = 0;
+    int a = 0;
 
-    cout << "Ingresa el texto binario a desencriptar: ";
-    cin.getline(textoBinario, 150);
-
-    // Pedir semilla válida
-    while (true) {
-        cout << "Ingrese la semilla: ";
-        cin >> semilla;
-        if (semilla > 1 && semilla <= 8)
-            break;
-        cout << "Semilla no válida, intentalo nuevamente" << endl;
-    }
-
-    int longitud = strlen(textoBinario);
+    int longitud = textoBinario.size();
 
     // Procesar bloques de n bits
     for (int i = 0; i < longitud; i += semilla) {
@@ -136,16 +110,12 @@ int metDecodificador2() {
         textoDecodificado += grupo;
     }
 
-    cout << "\nBinario decodificado: " << textoDecodificado << endl;
-
     // Convertir de binario a texto ASCII
-    cout << "Texto original: ";
+    string textoASCII = "";
     for (int i = 0; i < textoDecodificado.size(); i += 8) {
-        string byte = textoDecodificado.substr(i, 8);
-        bitset<8> bits(byte);
-        cout << char(bits.to_ulong());
+        bitset<8> bits(textoDecodificado.substr(i, 8));
+        textoASCII += char(bits.to_ulong());
     }
-    cout << endl;
 
-    return 0;
+    return textoASCII;
 }

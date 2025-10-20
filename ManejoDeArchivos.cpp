@@ -31,3 +31,9 @@ void editarArchivo(const string &nombreArchivo, const string &contenido) {
     archivo << contenido; // escribimos el contenido
     archivo.close();
 }
+
+void guardarArchivo(const string &nombre, const string &contenido) {
+    ofstream salida(nombre);
+    salida << contenido;
+    salida.close();
+}
