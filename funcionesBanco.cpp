@@ -1,4 +1,7 @@
 #include <iostream>
+#include <string>
+#include <fstream>
+
 using namespace std;
 
 string metCodificador1(const string &texto,int semilla);
@@ -18,6 +21,11 @@ string verificacionUsuario() {
 
         // Verificación de admin
         string adminCod = leerArchivo("sudo.txt");
+        if (adminCod.empty()) {
+            cout << "Error: Archivo sudo.txt no encontrado o vacio\n";
+            continue;
+        }
+
         string adminDeco = metDecodificador2(adminCod, 4);
         if (adminDeco == usuario + " " + contrasena) {
             cout << "\nInicio de sesión como ADMIN.\n";

@@ -31,7 +31,7 @@ string MetDecodificador1(const string &textoBinario,int semilla) {
             int unos = 0, ceros = 0;
             for (int j = 0; j < semilla; j++) {
                 if (anterior[j] == '1') unos++;
-                else ceros++;
+                else if (anterior[j] == '0') ceros++;  // ← Solo contar '0' explícitamente
             }
 
             if (unos == ceros) {
@@ -66,20 +66,14 @@ string MetDecodificador1(const string &textoBinario,int semilla) {
         }
     }
 
-    int sobrantes = textoDecodificado.size() % 8;
-    if (sobrantes != 0) {
-        string limpio = "";
-        for (int i = 0; i < textoDecodificado.size() - sobrantes; i++) {
-            limpio += textoDecodificado[i];
-        }
-        textoDecodificado = limpio;
-    }
-
-    // lo convierte a ASCII
+    // Convertir de binario a texto ASCII
     string textoASCII = "";
     for (int i = 0; i < textoDecodificado.size(); i += 8) {
-        bitset<8> bits(textoDecodificado.substr(i, 8));
-        textoASCII += char(bits.to_ulong());
+
+        if (i + 8 <= textoDecodificado.size()) {
+            bitset<8> bits(textoDecodificado.substr(i, 8));
+            textoASCII += char(bits.to_ulong());
+        }
     }
     return textoASCII;
 
@@ -100,12 +94,14 @@ string metDecodificador2(const string &textoBinario, int semilla) {
         }
         grupo[semilla] = '\0';
 
-        //Desplazar a la derecha
-        char ultimo = grupo[semilla - 1];
-        for (int j = semilla - 1; j > 0; j--) {
-            grupo[j] = grupo[j - 1];
+        //Desplazar a la derecha 1 posición (revertir la rotacion izquierda de codificador)
+        char temp[9];
+        for (int j = 0; j < semilla; j++) {
+            temp[(j + 1) % semilla] = grupo[j];
         }
-        grupo[0] = ultimo;
+        for (int j = 0; j < semilla; j++) {
+            grupo[j] = temp[j];
+        }
 
         textoDecodificado += grupo;
     }

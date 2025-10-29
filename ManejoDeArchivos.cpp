@@ -4,32 +4,21 @@
 using namespace std;
 
 string leerArchivo(const string &nombreArchivo) {
-    ifstream archivo(nombreArchivo);
+    ifstream archivo(nombreArchivo, ios::binary);
     if (!archivo.is_open()) {
         cerr << "No se pudo abrir el archivo: " << nombreArchivo << endl;
         return "";
     }
 
-    string contenido = "";
-    string linea;
-    while (getline(archivo, linea)) {
-        contenido += linea + "\n"; // Agregamos salto de línea si quieres mantener la estructura
-    }
-
+    string contenido((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
     archivo.close();
-    return contenido;
-}
 
-void editarArchivo(const string &nombreArchivo, const string &contenido) {
-    ofstream archivo(nombreArchivo, ios::app); // siempre agregar al final
-
-    if (!archivo.is_open()) {
-        cerr << "No se pudo abrir el archivo: " << nombreArchivo << endl;
-        return;
+    // Limpieza: eliminar caracteres no binarios
+    string limpio;
+    for (char c : contenido) {
+        if (c == '0' || c == '1') limpio += c;
     }
-
-    archivo << contenido; // escribimos el contenido
-    archivo.close();
+    return limpio;
 }
 
 void guardarArchivo(const string &nombre, const string &contenido) {

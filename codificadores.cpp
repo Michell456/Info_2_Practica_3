@@ -6,23 +6,21 @@ using namespace std;
 string metCodificador1(const string &texto,int semilla) {
     char grupo[9], anterior[9];
     string binario = "", textoCodificado = "";
-    int a = 0, contadorBinario = 0;
+    int a = 0;
 
     // Convertir texto a binario
     for (int i = 0; i < texto.size(); i++) {
         bitset<8> bits(texto[i]);
         binario += bits.to_string();
-        contadorBinario += 8;
     }
 
     // Asegurar múltiplo de semilla
     while (binario.length() % semilla != 0) {
         binario += '0';
-        contadorBinario++;
     }
 
     // Procesar bloques
-    for (int i = 0; i < contadorBinario; i += semilla) {
+    for (int i = 0; i < binario.length(); i += semilla) {
         for (int j = 0; j < semilla; j++) {
             grupo[j] = binario[a];
             a++;
@@ -30,17 +28,19 @@ string metCodificador1(const string &texto,int semilla) {
         grupo[semilla] = '\0';
 
         if (i == 0) {
+
             //invertir todos los bits
             for (int j = 0; j < semilla; j++) {
                 if (grupo[j] == '0') grupo[j] = '1';
                 else grupo[j] = '0';
             }
         } else {
+
             //Contar 1s y 0s en el bloque anterior
             int unos = 0, ceros = 0;
             for (int j = 0; j < semilla; j++) {
                 if (anterior[j] == '1') unos++;
-                else ceros++;
+                else if (anterior[j] == '0') ceros++;
             }
 
             if (unos == ceros) {
@@ -66,50 +66,55 @@ string metCodificador1(const string &texto,int semilla) {
             }
         }
 
-        textoCodificado += grupo;
-
         for (int j = 0; j < semilla; j++) {
             anterior[j] = grupo[j];
         }
+        textoCodificado += grupo;
     }
 
     return textoCodificado;
 }
 
-string metCodificador2(const string &texto,int semilla) {
-    char grupo[9];
-    string binario = "", textoCodificado = "";
-    int a = 0, contadorBinario = 0;
+#include <iostream>
+#include <bitset>
+using namespace std;
 
-    // Convertir texto a binario
+string metCodificador2(const string &texto, int semilla) {
+    string binario = "";
+    string textoCodificado = "";
+    char grupo[9];
+    int a = 0;
+
+    // Convertir cada caracter a binario
     for (int i = 0; i < texto.size(); i++) {
         bitset<8> bits(texto[i]);
         binario += bits.to_string();
-        contadorBinario += 8;
     }
 
-    // Asegurar múltiplo de semilla
+    // Asegurar que el binario sea múltiplo de la semilla
     while (binario.length() % semilla != 0) {
         binario += '0';
-        contadorBinario++;
     }
 
-    // Procesar cada bloque de n(semilla) bits
-    for (int i = 0; i < contadorBinario; i += semilla) {
+    // Procesar bloques de n (semilla) bits
+    for (int i = 0; i < binario.length(); i += semilla) {
         for (int j = 0; j < semilla; j++) {
             grupo[j] = binario[a];
             a++;
         }
         grupo[semilla] = '\0';
 
-        // Desplazar a la izquierda
-        char primerCaracter = grupo[0];
+        // Rotar bits a la izquierda 1 posición
+        char primero = grupo[0];
         for (int j = 0; j < semilla - 1; j++) {
             grupo[j] = grupo[j + 1];
         }
-        grupo[semilla - 1] = primerCaracter;
+        grupo[semilla - 1] = primero;
 
-        textoCodificado += grupo;
+        // Agregar grupo codificado al resultado
+        for (int j = 0; j < semilla; j++) {
+            textoCodificado += grupo[j];
+        }
     }
 
     return textoCodificado;
